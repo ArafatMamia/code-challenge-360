@@ -1,0 +1,52 @@
+Implement a route planning algorithm for a delivery company.    
+problem:
+we have different deliver packages to several building in a city with the distance every pair of building that 
+returns the shortest possible route to travel from the starting building to all the other buildings, 
+visiting all the buildings exactly once and returning to the starting building 
+Given:
+buildings(nodes) and start point of the building
+
+solution:
+as we can see from the above problem it is undirected weighted graph. 
+to find the shortest path we can use BFS(breadth frist search) or dijkstra's shortest path algorithm 
+BFS ---> used for shortest path when the distance is unit(1) or unwieghted graph 
+dijkstra --> used for shortest path when we have a weighted graph
+so, we use dijkstra shortest path algorithm
+Example:    
+              2
+    B(2) ---------------- >D(4)
+10 /| ^              /|   |
+  /   |         8  /      |5
+A(1) \  4|        /          |
+   \  |     /             |
+ 3 _\||  /                v
+      C(3)----------------->E(5)
+              2
+
+              
+this is directed weighted graph 
+the idea of this algorithm is we start from A 
+from A we have two edges going out B(10) and C(3), so we vist C(3)
+from c we have three edges going out B(10) and E(3), so we can visit E(5), B(7) and D(11)
+note: from A to B --> 10 cost
+      from A to C to B --> 7 cost 
+      from A to B to D --> 12 cost 
+      from A to C to D --> 11 cost
+      from A to B to D to E --> 17 cost
+      from A to C to E ---> 5 cost 
+
+by using MinHeap we can calculate the minimun cost of all path from one point to another as mentioned above.
+by using to  hash map   
+--> we push A to minHeap and then we pop from the minHeap and push to hashmap A --> 0   
+<0, A> 
+ --> then we push both adjecent neighboor of A to the minHeap B and C then we pop the minimun const --> C --> 3
+<10,B> ,<3, C>  
+ --> then we push adjecent neighboor of C  to the minHeap E, B and D then we pop the minimun cost  --> E --> 5
+ <5, E>, <5,B> and <11,D> 
+--> then we push adjecent neighboor of E wich have none so, we pop again from the minHeap with the minimun cost  --> B --> 7
+ --> then we push adjecent neighboor of B  to the minHeap  D then we pop the minimun cost  --> D--> 9
+ <9, D>
+ Time Complexity:
+ v^2 = E
+ O(ElogE) or O(ElogV)
+ when V = vertices and E = edges
